@@ -23,9 +23,9 @@ You can always check and update the shortcuts [here](src/index.ts).
 "alt" + "cmd" + "down"|move window to "bottom"
 "alt" + "cmd" + "left"|move window to "left"
 "alt" + "cmd" + "right"|move window to "right"
-"alt" + "cmd" + "1"|move window to screen number 1
-"alt" + "cmd" + "2"|move window to screen number 2
-"alt" + "cmd" + "3"|move window to screen number 3
+"shift" + "ctrl" + "keypad1"|move window to screen number 1
+"shift" + "ctrl" + "keypad2"|move window to screen number 2
+"shift" + "ctrl" + "keypad3"|move window to screen number 3
 "alt" + "cmd" + "."|move window to next screen
 "alt" + "cmd" + ","|move window to previous number
 "alt" + "cmd" + "end"|minimize all windows but keep current in open and in focus

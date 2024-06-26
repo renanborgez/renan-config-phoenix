@@ -61,9 +61,9 @@ Key.on("right", MODIFIER, () => moveWindowTo("right"));
 /**
  * Screen key bindings
  */
-Key.on("1", MODIFIER, () => toScreen(1));
-Key.on("2", MODIFIER, () => toScreen(2));
-Key.on("3", MODIFIER, () => toScreen(3));
+Key.on("keypad1", ["shift", "ctrl"], () => toScreen(1));
+Key.on("keypad2", ["shift", "ctrl"], () => toScreen(2));
+Key.on("keypad3", ["shift", "ctrl"], () => toScreen(3));
 
 Key.on(".", MODIFIER, () => toScreen("next"));
 Key.on(",", MODIFIER, () => toScreen("previous"));
