@@ -4,7 +4,28 @@ Configuration for PhoenixJs Window Manager - https://github.com/kasper/phoenix/
 
 ## Shortcuts
 
-![Key bindings](images/key-bindings.png)
+You can always check and update the shortcuts [here](src/index.ts).
+
+|Keys|Description
+|-|-|
+"alt" + "cmd" + "keypad1"|move window to "bottom-left"
+"alt" + "cmd" + "keypad2"|move window to "bottom"
+"alt" + "cmd" + "keypad3"|move window to "bottom-right"
+"alt" + "cmd" + "keypad4"|move window to "left"
+"alt" + "cmd" + "keypad5"|move window to "center"
+"alt" + "cmd" + "keypad6"|move window to "right"
+"alt" + "cmd" + "keypad7"|move window to "top-left"
+"alt" + "cmd" + "keypad8"|move window to "top"
+"alt" + "cmd" + "keypad9"|move window to "top-right"
+"alt" + "cmd" + "up"|move window to "top"
+"alt" + "cmd" + "down"|move window to "bottom"
+"alt" + "cmd" + "left"|move window to "left"
+"alt" + "cmd" + "right"|move window to "right"
+"alt" + "cmd" + "1"|move window to screen number 1
+"alt" + "cmd" + "2"|move window to screen number 2
+"alt" + "cmd" + "3"|move window to screen number 3
+"alt" + "cmd" + "."|move window to next screen
+"alt" + "cmd" + ","|move window to previous number
 
 ## Installation
 

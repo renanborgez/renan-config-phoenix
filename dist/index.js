@@ -1,6 +1,7 @@
 "use strict";
 
 // src/modules/corners.ts
+var DEBOUNCE_TIME = 1e3;
 var lastKey = null;
 var lastCallTime = Date.now();
 var keyPressCount = 0;
@@ -12,18 +13,25 @@ var moveWindowTo = (corner) => {
   const screenWidth = $screen.width;
   const screenHeight = $screen.height;
   let windowSize = 50;
-  if (corner === lastKey && now - lastCallTime < 1e3) {
+  if (corner === lastKey && now - lastCallTime < DEBOUNCE_TIME) {
     keyPressCount += 1;
   } else {
     keyPressCount = 1;
   }
-  if (keyPressCount === 2) {
-    windowSize = 75;
-  } else if (keyPressCount === 3) {
-    windowSize = 25;
-  } else if (keyPressCount > 3) {
-    windowSize = 50;
-    keyPressCount = 1;
+  switch (keyPressCount) {
+    case 1:
+      windowSize = 50;
+      break;
+    case 2:
+      windowSize = 75;
+      break;
+    case 3:
+      windowSize = 100;
+      break;
+    case 4:
+      windowSize = 25;
+      keyPressCount = 0;
+      break;
   }
   lastKey = corner;
   lastCallTime = now;
@@ -32,46 +40,46 @@ var moveWindowTo = (corner) => {
   let h = screenHeight * windowSize / 100;
   switch (corner) {
     case "left":
-      x = 0;
-      y = 0;
+      x = $screen.x;
+      y = $screen.y;
       h = screenHeight;
       break;
     case "right":
-      x = screenWidth - w;
-      y = 0;
+      x = screenWidth - w + $screen.x;
+      y = $screen.y;
       h = screenHeight;
       break;
     case "top":
-      x = 0;
-      y = 0;
+      x = $screen.x;
+      y = $screen.y;
       w = screenWidth;
       break;
     case "bottom":
-      x = 0;
-      y = screenHeight - h;
+      x = $screen.x;
+      y = screenHeight - h + $screen.y;
       w = screenWidth;
       break;
     case "center":
-      x = 0;
-      y = 0;
-      w = screenWidth;
-      h = screenHeight;
+      w = windowSize / 100 * screenWidth;
+      h = windowSize / 100 * screenHeight;
+      x = $screen.x + (screenWidth - w) / 2;
+      y = $screen.y + (screenHeight - h) / 2;
       break;
     case "top-left":
-      x = 0;
-      y = 0;
+      x = $screen.x;
+      y = $screen.y;
       break;
     case "top-right":
-      x = screenWidth - w;
-      y = 0;
+      x = screenWidth - w + $screen.x;
+      y = $screen.y;
       break;
     case "bottom-right":
-      x = screenWidth - w;
-      y = screenHeight - h;
+      x = screenWidth - w + $screen.x;
+      y = screenHeight - h + $screen.y;
       break;
     case "bottom-left":
-      x = 0;
-      y = screenHeight - h;
+      x = $screen.x;
+      y = screenHeight - h + $screen.y;
       break;
     default:
       Phoenix.log("ERROR: Invalid position specified");
@@ -98,14 +106,19 @@ var frameRatio = (a, b) => {
 };
 
 // src/modules/screen.ts
-var toScreen = (screenNumber) => {
+var toScreen = (screen) => {
   const $screens = Screen.all().sort((a, b) => a.frame().x - b.frame().x);
   const $window = Window.focused();
   if ($screens.length === 0 || !$window) {
     return;
   }
+  let $newScreen;
   const $oldScreen = $window.screen();
-  const $newScreen = $screens[screenNumber - 1];
+  if (typeof screen === "number") {
+    $newScreen = $screens[screen - 1];
+  } else {
+    $newScreen = screen === "next" ? $oldScreen.next() : $oldScreen.previous();
+  }
   const $newScreenFrame = $newScreen.flippedVisibleFrame();
   const ratio = frameRatio(
     $oldScreen.flippedVisibleFrame(),
@@ -118,26 +131,39 @@ var toScreen = (screenNumber) => {
   });
 };
 
+// src/utils/guard.ts
+var safeExecute = (fn) => (...args) => {
+  try {
+    return fn(...args);
+  } catch (error) {
+    Phoenix.log("ERROR: ", JSON.stringify(error));
+    return void 0;
+  }
+};
+
 // src/index.ts
-Phoenix.log("Renan Config Phoenix");
+var moveWindowTo2 = safeExecute(moveWindowTo);
+var toScreen2 = safeExecute(toScreen);
+Phoenix.log("Renan Config Phoenix Loaded");
 Phoenix.set({
   daemon: false,
   openAtLogin: true
 });
-var CORNER_MODIFIERS = ["alt", "cmd"];
-Key.on("keypad7", CORNER_MODIFIERS, () => moveWindowTo("top-left"));
-Key.on("keypad8", CORNER_MODIFIERS, () => moveWindowTo("top"));
-Key.on("keypad9", CORNER_MODIFIERS, () => moveWindowTo("top-right"));
-Key.on("keypad4", CORNER_MODIFIERS, () => moveWindowTo("left"));
-Key.on("keypad5", CORNER_MODIFIERS, () => moveWindowTo("center"));
-Key.on("keypad6", CORNER_MODIFIERS, () => moveWindowTo("right"));
-Key.on("keypad1", CORNER_MODIFIERS, () => moveWindowTo("bottom-left"));
-Key.on("keypad2", CORNER_MODIFIERS, () => moveWindowTo("bottom"));
-Key.on("keypad3", CORNER_MODIFIERS, () => moveWindowTo("bottom-right"));
-Key.on("up", CORNER_MODIFIERS, () => moveWindowTo("top"));
-Key.on("down", CORNER_MODIFIERS, () => moveWindowTo("bottom"));
-Key.on("left", CORNER_MODIFIERS, () => moveWindowTo("left"));
-Key.on("right", CORNER_MODIFIERS, () => moveWindowTo("right"));
-var SCREEN_MODIFIERS = ["shift", "cmd"];
-Key.on("1", SCREEN_MODIFIERS, () => toScreen(1));
-Key.on("2", SCREEN_MODIFIERS, () => toScreen(2));
+Key.on("keypad7", ["alt", "cmd"], () => moveWindowTo2("top-left"));
+Key.on("keypad8", ["alt", "cmd"], () => moveWindowTo2("top"));
+Key.on("keypad9", ["alt", "cmd"], () => moveWindowTo2("top-right"));
+Key.on("keypad4", ["alt", "cmd"], () => moveWindowTo2("left"));
+Key.on("keypad5", ["alt", "cmd"], () => moveWindowTo2("center"));
+Key.on("keypad6", ["alt", "cmd"], () => moveWindowTo2("right"));
+Key.on("keypad1", ["alt", "cmd"], () => moveWindowTo2("bottom-left"));
+Key.on("keypad2", ["alt", "cmd"], () => moveWindowTo2("bottom"));
+Key.on("keypad3", ["alt", "cmd"], () => moveWindowTo2("bottom-right"));
+Key.on("up", ["alt", "cmd"], () => moveWindowTo2("top"));
+Key.on("down", ["alt", "cmd"], () => moveWindowTo2("bottom"));
+Key.on("left", ["alt", "cmd"], () => moveWindowTo2("left"));
+Key.on("right", ["alt", "cmd"], () => moveWindowTo2("right"));
+Key.on("1", ["alt", "cmd"], () => toScreen2(1));
+Key.on("2", ["alt", "cmd"], () => toScreen2(2));
+Key.on("3", ["alt", "cmd"], () => toScreen2(3));
+Key.on(".", ["alt", "cmd"], () => toScreen2("next"));
+Key.on(",", ["alt", "cmd"], () => toScreen2("previous"));
