@@ -7,9 +7,6 @@
 
 type Corner = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'right' | 'left' | 'top' | 'bottom' | 'center' | 'full';
 
-// Constants
-const DEBOUNCE_TIME = 1000;  // Time in milliseconds for detecting repeated key presses
-
 // Debounce variables for detecting repeated key presses
 let lastKey: Corner | null = null;
 let lastCallTime: number = Date.now();
@@ -23,8 +20,9 @@ let keyPressCount: number = 0;
  *
  * @param {Corner} corner - The corner or position to move the window to.
  * Can be one of 'top-right', 'top-left', 'bottom-right', 'bottom-left', 'right', 'left', 'top', 'bottom', 'center', 'full'.
- */
-export const moveWindowTo = (corner: Corner) => {
+  @param {number} [debounceTimeMs=1000] The debounce time in milliseconds for repeated keys actions.
+*/
+export const moveWindowTo = (corner: Corner, debounceTimeMs = 1000) => {
   const now = Date.now();
   const $window = Window.focused();
 
@@ -38,7 +36,7 @@ export const moveWindowTo = (corner: Corner) => {
 
   // Determine the new window size based on the key press count
   let windowSize = 50;
-  if (corner === lastKey && now - lastCallTime < DEBOUNCE_TIME) {
+  if (corner === lastKey && (now - lastCallTime) < debounceTimeMs) {
     keyPressCount += 1;
   } else {
     keyPressCount = 1;
@@ -125,3 +123,42 @@ export const moveWindowTo = (corner: Corner) => {
     height: h,
   });
 };
+
+/**
+ * Minimize all windows except the currently focused window.
+ *
+ * This function iterates through all open windows and minimizes them, except for the currently focused window.
+ * After minimizing, it raises the currently focused window to the front after a brief delay.
+ */
+export const minimizeAllButCurrent = () => {
+  const $currentWindow = Window.focused();
+
+  const $windows = Window.all();
+  $windows?.map(($window) => {
+    if ($window.hash() !== $currentWindow?.hash()) {
+      $window.minimize();
+    }
+  });
+
+  setTimeout(() => $currentWindow?.raise(), 100);
+};
+
+/**
+ * Unminimize all windows except the currently focused window.
+ *
+ * This function iterates through all open windows and unminimizes them, except for the currently focused window.
+ * After unminimizing, it raises the currently focused window to the front after a brief delay.
+ */
+export const unminimizeAllButCurrent = () => {
+  const $currentWindow = Window.focused();
+
+  const $windows = Window.all();
+  $windows?.map(($window) => {
+    if ($window.hash() !== $currentWindow?.hash()) {
+      $window.unminimize();
+    }
+  });
+
+  setTimeout(() => $currentWindow?.raise(), 100);
+};
+

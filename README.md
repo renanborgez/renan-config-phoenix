@@ -26,7 +26,8 @@ You can always check and update the shortcuts [here](src/index.ts).
 "alt" + "cmd" + "3"|move window to screen number 3
 "alt" + "cmd" + "."|move window to next screen
 "alt" + "cmd" + ","|move window to previous number
-
+"alt" + "cmd" + "end"|minimize all windows but keep current in open and in focus
+"alt" + "cmd" + "home"|unminimize all windows but keep current in focus
 ## Installation
 
 1. Be sure to exit PhoenixJs.

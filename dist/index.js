@@ -1,11 +1,10 @@
 "use strict";
 
-// src/modules/corners.ts
-var DEBOUNCE_TIME = 1e3;
+// src/modules/sizing.ts
 var lastKey = null;
 var lastCallTime = Date.now();
 var keyPressCount = 0;
-var moveWindowTo = (corner) => {
+var moveWindowTo = (corner, debounceTimeMs = 1e3) => {
   const now = Date.now();
   const $window = Window.focused();
   if (!$window) return;
@@ -13,7 +12,7 @@ var moveWindowTo = (corner) => {
   const screenWidth = $screen.width;
   const screenHeight = $screen.height;
   let windowSize = 50;
-  if (corner === lastKey && now - lastCallTime < DEBOUNCE_TIME) {
+  if (corner === lastKey && now - lastCallTime < debounceTimeMs) {
     keyPressCount += 1;
   } else {
     keyPressCount = 1;
@@ -91,6 +90,26 @@ var moveWindowTo = (corner) => {
     height: h
   });
 };
+var minimizeAllButCurrent = () => {
+  const $currentWindow = Window.focused();
+  const $windows = Window.all();
+  $windows?.map(($window) => {
+    if ($window.hash() !== $currentWindow?.hash()) {
+      $window.minimize();
+    }
+  });
+  setTimeout(() => $currentWindow?.raise(), 100);
+};
+var unminimizeAllButCurrent = () => {
+  const $currentWindow = Window.focused();
+  const $windows = Window.all();
+  $windows?.map(($window) => {
+    if ($window.hash() !== $currentWindow?.hash()) {
+      $window.unminimize();
+    }
+  });
+  setTimeout(() => $currentWindow?.raise(), 100);
+};
 
 // src/utils/frame.ts
 var frameRatio = (a, b) => {
@@ -144,6 +163,8 @@ var safeExecute = (fn) => (...args) => {
 // src/index.ts
 var moveWindowTo2 = safeExecute(moveWindowTo);
 var toScreen2 = safeExecute(toScreen);
+var minimizeAllButCurrent2 = safeExecute(minimizeAllButCurrent);
+var unminimizeAllButCurrent2 = safeExecute(unminimizeAllButCurrent);
 Phoenix.log("Renan Config Phoenix Loaded");
 Phoenix.set({
   daemon: false,
@@ -167,3 +188,5 @@ Key.on("2", ["alt", "cmd"], () => toScreen2(2));
 Key.on("3", ["alt", "cmd"], () => toScreen2(3));
 Key.on(".", ["alt", "cmd"], () => toScreen2("next"));
 Key.on(",", ["alt", "cmd"], () => toScreen2("previous"));
+Key.on("end", ["alt", "cmd"], () => minimizeAllButCurrent2());
+Key.on("home", ["alt", "cmd"], () => unminimizeAllButCurrent2());

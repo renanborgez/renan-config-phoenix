@@ -1,9 +1,15 @@
-import { moveWindowTo as moveWindowToUnsafe } from "modules/corners";
+import {
+  moveWindowTo as moveWindowToUnsafe,
+  minimizeAllButCurrent as minimizeAllButCurrentUnsafe,
+  unminimizeAllButCurrent as unminimizeAllButCurrentUnsafe,
+} from "modules/sizing";
 import { toScreen as toScreenUnsafe } from "modules/screen";
 import { safeExecute } from "utils/guard";
 
 const moveWindowTo = safeExecute(moveWindowToUnsafe);
 const toScreen = safeExecute(toScreenUnsafe);
+const minimizeAllButCurrent = safeExecute(minimizeAllButCurrentUnsafe);
+const unminimizeAllButCurrent = safeExecute(unminimizeAllButCurrentUnsafe);
 
 Phoenix.log("Renan Config Phoenix Loaded");
 
@@ -14,7 +20,7 @@ Phoenix.set({
 });
 
 /**
- * Corner key bindings
+ * Window sizing key bindings
  */
 
 // Keypad numbers
@@ -45,3 +51,9 @@ Key.on("3", ["alt", "cmd"], () => toScreen(3));
 
 Key.on(".", ["alt", "cmd"], () => toScreen("next"));
 Key.on(",", ["alt", "cmd"], () => toScreen("previous"));
+
+/**
+ * Window sizing key bindings
+ */
+Key.on("end", ["alt", "cmd"], () => minimizeAllButCurrent());
+Key.on("home", ["alt", "cmd"], () => unminimizeAllButCurrent());
