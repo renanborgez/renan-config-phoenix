@@ -119,6 +119,36 @@ var exitFullscreen = () => {
   $currentWindow?.setFullScreen(false);
 };
 
+// src/modules/application.ts
+var PROTECTED_APPS = [
+  "Phoenix",
+  "Finder"
+];
+var openApps = (appNames = []) => {
+  appNames.map((appName) => {
+    App.launch(appName)?.focus();
+  });
+};
+var lastCallTime2 = Date.now();
+var keyPressCount2 = 0;
+var die = (debounceTimeMs = 1e3) => {
+  const now = Date.now();
+  if (now - lastCallTime2 < debounceTimeMs) {
+    keyPressCount2 += 1;
+  } else {
+    keyPressCount2 = 1;
+  }
+  if (keyPressCount2 < 3) return;
+  lastCallTime2 = now;
+  const $apps = App.all();
+  const protectedAppHashes = PROTECTED_APPS.map((appName) => App.get(appName)?.hash());
+  $apps.map(($app) => {
+    if (!protectedAppHashes.includes($app.hash())) {
+      $app.terminate();
+    }
+  });
+};
+
 // src/utils/frame.ts
 var frameRatio = (a, b) => {
   const widthRatio = b.width / a.width;
@@ -175,6 +205,8 @@ var minimizeAllButCurrent2 = safeExecute(minimizeAllButCurrent);
 var unminimizeAllButCurrent2 = safeExecute(unminimizeAllButCurrent);
 var enterFullscreen2 = safeExecute(enterFullscreen);
 var exitFullscreen2 = safeExecute(exitFullscreen);
+var openApps2 = safeExecute(openApps);
+var die2 = safeExecute(die);
 Phoenix.log("Renan Config Phoenix Loaded");
 Phoenix.set({
   daemon: false,
@@ -202,3 +234,5 @@ Key.on(".", ["alt", "cmd"], () => toScreen2("next"));
 Key.on(",", ["alt", "cmd"], () => toScreen2("previous"));
 Key.on("end", ["alt", "cmd"], () => minimizeAllButCurrent2());
 Key.on("home", ["alt", "cmd"], () => unminimizeAllButCurrent2());
+Key.on("\\", ["alt", "cmd"], () => openApps2(["iTerm", "Slack", "Arc"]));
+Key.on("delete", ["alt", "cmd"], () => die2());

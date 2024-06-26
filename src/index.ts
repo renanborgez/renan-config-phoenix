@@ -5,6 +5,10 @@ import {
   enterFullscreen as enterFullscreenUnsafe,
   exitFullscreen as exitFullscreenUnsafe,
 } from "modules/sizing";
+import {
+  openApps as openAppsUnsafe,
+  die as dieUnsafe,
+} from "modules/application";
 import { toScreen as toScreenUnsafe } from "modules/screen";
 import { safeExecute } from "utils/guard";
 
@@ -14,6 +18,8 @@ const minimizeAllButCurrent = safeExecute(minimizeAllButCurrentUnsafe);
 const unminimizeAllButCurrent = safeExecute(unminimizeAllButCurrentUnsafe);
 const enterFullscreen = safeExecute(enterFullscreenUnsafe);
 const exitFullscreen = safeExecute(exitFullscreenUnsafe);
+const openApps = safeExecute(openAppsUnsafe);
+const die = safeExecute(dieUnsafe);
 
 Phoenix.log("Renan Config Phoenix Loaded");
 
@@ -64,3 +70,8 @@ Key.on(",", ["alt", "cmd"], () => toScreen("previous"));
  */
 Key.on("end", ["alt", "cmd"], () => minimizeAllButCurrent());
 Key.on("home", ["alt", "cmd"], () => unminimizeAllButCurrent());
+
+/**
+ * App key bindings
+ */
+Key.on("\\", ["alt", "cmd"], () => openApps(["iTerm", "Slack", "Arc"]));
