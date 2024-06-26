@@ -8,6 +8,8 @@ You can always check and update the shortcuts [here](src/index.ts).
 
 |Keys|Description
 |-|-|
+"alt" + "cmd" + "keypad."|exist full screen
+"alt" + "cmd" + "keypad0"|enter full screen
 "alt" + "cmd" + "keypad1"|move window to "bottom-left"
 "alt" + "cmd" + "keypad2"|move window to "bottom"
 "alt" + "cmd" + "keypad3"|move window to "bottom-right"
@@ -28,6 +30,7 @@ You can always check and update the shortcuts [here](src/index.ts).
 "alt" + "cmd" + ","|move window to previous number
 "alt" + "cmd" + "end"|minimize all windows but keep current in open and in focus
 "alt" + "cmd" + "home"|unminimize all windows but keep current in focus
+
 ## Installation
 
 1. Be sure to exit PhoenixJs.

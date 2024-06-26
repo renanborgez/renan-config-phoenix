@@ -162,3 +162,12 @@ export const unminimizeAllButCurrent = () => {
   setTimeout(() => $currentWindow?.raise(), 100);
 };
 
+export const enterFullscreen = () => {
+  const $currentWindow = Window.focused();
+  $currentWindow?.setFullScreen(true);
+};
+
+export const exitFullscreen = () => {
+  const $currentWindow = Window.focused();
+  $currentWindow?.setFullScreen(false);
+};

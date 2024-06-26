@@ -110,6 +110,14 @@ var unminimizeAllButCurrent = () => {
   });
   setTimeout(() => $currentWindow?.raise(), 100);
 };
+var enterFullscreen = () => {
+  const $currentWindow = Window.focused();
+  $currentWindow?.setFullScreen(true);
+};
+var exitFullscreen = () => {
+  const $currentWindow = Window.focused();
+  $currentWindow?.setFullScreen(false);
+};
 
 // src/utils/frame.ts
 var frameRatio = (a, b) => {
@@ -165,20 +173,24 @@ var moveWindowTo2 = safeExecute(moveWindowTo);
 var toScreen2 = safeExecute(toScreen);
 var minimizeAllButCurrent2 = safeExecute(minimizeAllButCurrent);
 var unminimizeAllButCurrent2 = safeExecute(unminimizeAllButCurrent);
+var enterFullscreen2 = safeExecute(enterFullscreen);
+var exitFullscreen2 = safeExecute(exitFullscreen);
 Phoenix.log("Renan Config Phoenix Loaded");
 Phoenix.set({
   daemon: false,
   openAtLogin: true
 });
-Key.on("keypad7", ["alt", "cmd"], () => moveWindowTo2("top-left"));
-Key.on("keypad8", ["alt", "cmd"], () => moveWindowTo2("top"));
-Key.on("keypad9", ["alt", "cmd"], () => moveWindowTo2("top-right"));
-Key.on("keypad4", ["alt", "cmd"], () => moveWindowTo2("left"));
-Key.on("keypad5", ["alt", "cmd"], () => moveWindowTo2("center"));
-Key.on("keypad6", ["alt", "cmd"], () => moveWindowTo2("right"));
+Key.on("keypad0", ["alt", "cmd"], () => enterFullscreen2());
+Key.on("keypad.", ["alt", "cmd"], () => exitFullscreen2());
 Key.on("keypad1", ["alt", "cmd"], () => moveWindowTo2("bottom-left"));
 Key.on("keypad2", ["alt", "cmd"], () => moveWindowTo2("bottom"));
 Key.on("keypad3", ["alt", "cmd"], () => moveWindowTo2("bottom-right"));
+Key.on("keypad4", ["alt", "cmd"], () => moveWindowTo2("left"));
+Key.on("keypad5", ["alt", "cmd"], () => moveWindowTo2("center"));
+Key.on("keypad6", ["alt", "cmd"], () => moveWindowTo2("right"));
+Key.on("keypad7", ["alt", "cmd"], () => moveWindowTo2("top-left"));
+Key.on("keypad8", ["alt", "cmd"], () => moveWindowTo2("top"));
+Key.on("keypad9", ["alt", "cmd"], () => moveWindowTo2("top-right"));
 Key.on("up", ["alt", "cmd"], () => moveWindowTo2("top"));
 Key.on("down", ["alt", "cmd"], () => moveWindowTo2("bottom"));
 Key.on("left", ["alt", "cmd"], () => moveWindowTo2("left"));
