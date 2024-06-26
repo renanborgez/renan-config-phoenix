@@ -12,6 +12,7 @@ import { openApps as openAppsUnsafe
 import { toScreen as toScreenUnsafe } from "modules/screen";
 import { safeExecute } from "utils/guard";
 
+// TODO: Make the safeExecute function integrated with the modules functions and avoid this chunk of code
 const moveWindowTo = safeExecute(moveWindowToUnsafe);
 const toScreen = safeExecute(toScreenUnsafe);
 const minimizeAllButCurrent = safeExecute(minimizeAllButCurrentUnsafe);
