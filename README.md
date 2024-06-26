@@ -2,6 +2,10 @@
 
 Configuration for PhoenixJs Window Manager - https://github.com/kasper/phoenix/
 
+## Shortcuts
+
+![Key bindings](images/key-bindings.png)
+
 ## Installation
 
 1. Be sure to exit PhoenixJs.

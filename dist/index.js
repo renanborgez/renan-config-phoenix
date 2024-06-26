@@ -4,7 +4,7 @@
 var lastKey = null;
 var lastCallTime = Date.now();
 var keyPressCount = 0;
-var moveTo = (corner) => {
+var moveWindowTo = (corner) => {
   const now = Date.now();
   const $window = Window.focused();
   if (!$window) return;
@@ -74,7 +74,7 @@ var moveTo = (corner) => {
       y = screenHeight - h;
       break;
     default:
-      console.log("ERROR: Invalid position specified");
+      Phoenix.log("ERROR: Invalid position specified");
       return;
   }
   $window.setTopLeft({ x, y });
@@ -119,25 +119,25 @@ var toScreen = (screenNumber) => {
 };
 
 // src/index.ts
-Phoenix.log("PHOENIX");
+Phoenix.log("Renan Config Phoenix");
 Phoenix.set({
   daemon: false,
   openAtLogin: true
 });
 var CORNER_MODIFIERS = ["alt", "cmd"];
-Key.on("keypad7", CORNER_MODIFIERS, () => moveTo("top-left"));
-Key.on("keypad8", CORNER_MODIFIERS, () => moveTo("top"));
-Key.on("keypad9", CORNER_MODIFIERS, () => moveTo("top-right"));
-Key.on("keypad4", CORNER_MODIFIERS, () => moveTo("left"));
-Key.on("keypad5", CORNER_MODIFIERS, () => moveTo("center"));
-Key.on("keypad6", CORNER_MODIFIERS, () => moveTo("right"));
-Key.on("keypad1", CORNER_MODIFIERS, () => moveTo("bottom-left"));
-Key.on("keypad2", CORNER_MODIFIERS, () => moveTo("bottom"));
-Key.on("keypad3", CORNER_MODIFIERS, () => moveTo("bottom-right"));
-Key.on("up", CORNER_MODIFIERS, () => moveTo("top"));
-Key.on("down", CORNER_MODIFIERS, () => moveTo("bottom"));
-Key.on("left", CORNER_MODIFIERS, () => moveTo("left"));
-Key.on("right", CORNER_MODIFIERS, () => moveTo("right"));
+Key.on("keypad7", CORNER_MODIFIERS, () => moveWindowTo("top-left"));
+Key.on("keypad8", CORNER_MODIFIERS, () => moveWindowTo("top"));
+Key.on("keypad9", CORNER_MODIFIERS, () => moveWindowTo("top-right"));
+Key.on("keypad4", CORNER_MODIFIERS, () => moveWindowTo("left"));
+Key.on("keypad5", CORNER_MODIFIERS, () => moveWindowTo("center"));
+Key.on("keypad6", CORNER_MODIFIERS, () => moveWindowTo("right"));
+Key.on("keypad1", CORNER_MODIFIERS, () => moveWindowTo("bottom-left"));
+Key.on("keypad2", CORNER_MODIFIERS, () => moveWindowTo("bottom"));
+Key.on("keypad3", CORNER_MODIFIERS, () => moveWindowTo("bottom-right"));
+Key.on("up", CORNER_MODIFIERS, () => moveWindowTo("top"));
+Key.on("down", CORNER_MODIFIERS, () => moveWindowTo("bottom"));
+Key.on("left", CORNER_MODIFIERS, () => moveWindowTo("left"));
+Key.on("right", CORNER_MODIFIERS, () => moveWindowTo("right"));
 var SCREEN_MODIFIERS = ["shift", "cmd"];
 Key.on("1", SCREEN_MODIFIERS, () => toScreen(1));
 Key.on("2", SCREEN_MODIFIERS, () => toScreen(2));

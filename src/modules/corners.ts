@@ -18,7 +18,7 @@ let keyPressCount: number = 0;
  * The default window size is 50% of the screen and it changes 25% on every key
  * repetition starting by 50%, example: 50% -> 75% -> 25% -> 50%
  */
-export const moveTo = (corner: Corner) => {
+export const moveWindowTo = (corner: Corner) => {
   const now = Date.now();
   const $window = Window.focused();
 
