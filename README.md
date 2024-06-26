@@ -57,6 +57,6 @@ You can use the following commands inside the configuration project:
 
 ```sh
 $ npm install # it will install all dependencies
-$ npm run build # will build the typescript files and should immediately work
-$ npm run dev # will start watch server and propagate any changes to phoenix immediately as well
+$ npm run dev # start the watch server and propagate any changes to phoenix immediately as they change
+$ npm run build # build the project and after it Phoenix should immediately reload with the new config
 ```
