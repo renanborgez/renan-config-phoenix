@@ -4,7 +4,7 @@
  * @param {Function} fn - The function to be executed safely.
  * @returns {Function} A curried function that takes the arguments for the original function.
  */
-export const safeExecute = (fn: Function) => (...args: any[]) => {
+export const safeExecute = (fn: (...args: never[]) => unknown) => (...args: never[]) => {
   try {
     return fn(...args);
   } catch (error) {
