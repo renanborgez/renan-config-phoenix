@@ -95,7 +95,7 @@ export const moveTo = (corner: Corner) => {
       y = screenHeight - h;
       break;
     default:
-      console.log("ERROR: Invalid position specified");
+      Phoenix.log("ERROR: Invalid position specified");
       return;
   }
 

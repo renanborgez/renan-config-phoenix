@@ -1,7 +1,7 @@
 import { moveTo } from "modules/corners";
 import { toNextScreen, toScreen } from "modules/screen";
 
-Phoenix.log('PHOENIX');
+Phoenix.log('Renan Config Phoenix');
 
 // Configuration
 Phoenix.set({
