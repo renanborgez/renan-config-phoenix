@@ -110,6 +110,14 @@ var unminimizeAllButCurrent = () => {
   });
   setTimeout(() => $currentWindow?.raise(), 100);
 };
+var minimizeCurrent = () => {
+  const $currrentApp = App.focused();
+  $currrentApp?.windows().map(($app) => $app.minimize());
+};
+var unminimizeCurrent = () => {
+  const $currrentApp = App.focused();
+  $currrentApp?.windows().map(($app) => $app.unminimize());
+};
 var enterFullscreen = () => {
   const $currentWindow = Window.focused();
   $currentWindow?.setFullScreen(true);
@@ -120,32 +128,9 @@ var exitFullscreen = () => {
 };
 
 // src/modules/application.ts
-var PROTECTED_APPS = [
-  "Phoenix",
-  "Finder"
-];
 var openApps = (appNames = []) => {
   appNames.map((appName) => {
     App.launch(appName)?.focus();
-  });
-};
-var lastCallTime2 = Date.now();
-var keyPressCount2 = 0;
-var die = (debounceTimeMs = 1e3) => {
-  const now = Date.now();
-  if (now - lastCallTime2 < debounceTimeMs) {
-    keyPressCount2 += 1;
-  } else {
-    keyPressCount2 = 1;
-  }
-  if (keyPressCount2 < 3) return;
-  lastCallTime2 = now;
-  const $apps = App.all();
-  const protectedAppHashes = PROTECTED_APPS.map((appName) => App.get(appName)?.hash());
-  $apps.map(($app) => {
-    if (!protectedAppHashes.includes($app.hash())) {
-      $app.terminate();
-    }
   });
 };
 
@@ -203,36 +188,39 @@ var moveWindowTo2 = safeExecute(moveWindowTo);
 var toScreen2 = safeExecute(toScreen);
 var minimizeAllButCurrent2 = safeExecute(minimizeAllButCurrent);
 var unminimizeAllButCurrent2 = safeExecute(unminimizeAllButCurrent);
+var minimizeCurrent2 = safeExecute(minimizeCurrent);
+var unminimizeCurrent2 = safeExecute(unminimizeCurrent);
 var enterFullscreen2 = safeExecute(enterFullscreen);
 var exitFullscreen2 = safeExecute(exitFullscreen);
 var openApps2 = safeExecute(openApps);
-var die2 = safeExecute(die);
 Phoenix.log("Renan Config Phoenix Loaded");
 Phoenix.set({
   daemon: false,
   openAtLogin: true
 });
-Key.on("keypad0", ["alt", "cmd"], () => enterFullscreen2());
-Key.on("keypad.", ["alt", "cmd"], () => exitFullscreen2());
-Key.on("keypad1", ["alt", "cmd"], () => moveWindowTo2("bottom-left"));
-Key.on("keypad2", ["alt", "cmd"], () => moveWindowTo2("bottom"));
-Key.on("keypad3", ["alt", "cmd"], () => moveWindowTo2("bottom-right"));
-Key.on("keypad4", ["alt", "cmd"], () => moveWindowTo2("left"));
-Key.on("keypad5", ["alt", "cmd"], () => moveWindowTo2("center"));
-Key.on("keypad6", ["alt", "cmd"], () => moveWindowTo2("right"));
-Key.on("keypad7", ["alt", "cmd"], () => moveWindowTo2("top-left"));
-Key.on("keypad8", ["alt", "cmd"], () => moveWindowTo2("top"));
-Key.on("keypad9", ["alt", "cmd"], () => moveWindowTo2("top-right"));
-Key.on("up", ["alt", "cmd"], () => moveWindowTo2("top"));
-Key.on("down", ["alt", "cmd"], () => moveWindowTo2("bottom"));
-Key.on("left", ["alt", "cmd"], () => moveWindowTo2("left"));
-Key.on("right", ["alt", "cmd"], () => moveWindowTo2("right"));
-Key.on("1", ["alt", "cmd"], () => toScreen2(1));
-Key.on("2", ["alt", "cmd"], () => toScreen2(2));
-Key.on("3", ["alt", "cmd"], () => toScreen2(3));
-Key.on(".", ["alt", "cmd"], () => toScreen2("next"));
-Key.on(",", ["alt", "cmd"], () => toScreen2("previous"));
-Key.on("end", ["alt", "cmd"], () => minimizeAllButCurrent2());
-Key.on("home", ["alt", "cmd"], () => unminimizeAllButCurrent2());
-Key.on("\\", ["alt", "cmd"], () => openApps2(["iTerm", "Slack", "Arc"]));
-Key.on("delete", ["alt", "cmd"], () => die2());
+var MODIFIER = ["alt", "cmd"];
+Key.on("keypad0", MODIFIER, () => enterFullscreen2());
+Key.on("keypad.", MODIFIER, () => exitFullscreen2());
+Key.on("keypad1", MODIFIER, () => moveWindowTo2("bottom-left"));
+Key.on("keypad2", MODIFIER, () => moveWindowTo2("bottom"));
+Key.on("keypad3", MODIFIER, () => moveWindowTo2("bottom-right"));
+Key.on("keypad4", MODIFIER, () => moveWindowTo2("left"));
+Key.on("keypad5", MODIFIER, () => moveWindowTo2("center"));
+Key.on("keypad6", MODIFIER, () => moveWindowTo2("right"));
+Key.on("keypad7", MODIFIER, () => moveWindowTo2("top-left"));
+Key.on("keypad8", MODIFIER, () => moveWindowTo2("top"));
+Key.on("keypad9", MODIFIER, () => moveWindowTo2("top-right"));
+Key.on("up", MODIFIER, () => moveWindowTo2("top"));
+Key.on("down", MODIFIER, () => moveWindowTo2("bottom"));
+Key.on("left", MODIFIER, () => moveWindowTo2("left"));
+Key.on("right", MODIFIER, () => moveWindowTo2("right"));
+Key.on("1", MODIFIER, () => toScreen2(1));
+Key.on("2", MODIFIER, () => toScreen2(2));
+Key.on("3", MODIFIER, () => toScreen2(3));
+Key.on(".", MODIFIER, () => toScreen2("next"));
+Key.on(",", MODIFIER, () => toScreen2("previous"));
+Key.on("end", MODIFIER, () => minimizeAllButCurrent2());
+Key.on("home", MODIFIER, () => unminimizeAllButCurrent2());
+Key.on("pageDown", MODIFIER, () => minimizeCurrent2());
+Key.on("pageUp", MODIFIER, () => unminimizeCurrent2());
+Key.on("\\", MODIFIER, () => openApps2(["iTerm", "Slack", "Arc"]));

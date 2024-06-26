@@ -20,8 +20,8 @@ let keyPressCount: number = 0;
  *
  * @param {Corner} corner - The corner or position to move the window to.
  * Can be one of 'top-right', 'top-left', 'bottom-right', 'bottom-left', 'right', 'left', 'top', 'bottom', 'center', 'full'.
-  @param {number} [debounceTimeMs=1000] The debounce time in milliseconds for repeated keys actions.
-*/
+ * @param {number} [debounceTimeMs=1000] - The debounce time in milliseconds for repeated keys actions.
+ */
 export const moveWindowTo = (corner: Corner, debounceTimeMs = 1000) => {
   const now = Date.now();
   const $window = Window.focused();
@@ -162,11 +162,33 @@ export const unminimizeAllButCurrent = () => {
   setTimeout(() => $currentWindow?.raise(), 100);
 };
 
+/**
+ * Minimize the currently focused window.
+ */
+export const minimizeCurrent = () => {
+  const $currrentApp = App.focused();
+  $currrentApp?.windows().map(($app) => $app.minimize());
+};
+
+/**
+ * Unminimize the currently focused window.
+ */
+export const unminimizeCurrent = () => {
+  const $currrentApp = App.focused();
+  $currrentApp?.windows().map(($app) => $app.unminimize());
+};
+
+/**
+ * Enter fullscreen mode for the currently focused window.
+ */
 export const enterFullscreen = () => {
   const $currentWindow = Window.focused();
   $currentWindow?.setFullScreen(true);
 };
 
+/**
+ * Exit fullscreen mode for the currently focused window.
+ */
 export const exitFullscreen = () => {
   const $currentWindow = Window.focused();
   $currentWindow?.setFullScreen(false);

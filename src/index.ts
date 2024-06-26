@@ -2,12 +2,12 @@ import {
   moveWindowTo as moveWindowToUnsafe,
   minimizeAllButCurrent as minimizeAllButCurrentUnsafe,
   unminimizeAllButCurrent as unminimizeAllButCurrentUnsafe,
+  minimizeCurrent as minimizeCurrentUnsafe,
+  unminimizeCurrent as unminimizeCurrentUnsafe,
   enterFullscreen as enterFullscreenUnsafe,
   exitFullscreen as exitFullscreenUnsafe,
 } from "modules/sizing";
-import {
-  openApps as openAppsUnsafe,
-  die as dieUnsafe,
+import { openApps as openAppsUnsafe
 } from "modules/application";
 import { toScreen as toScreenUnsafe } from "modules/screen";
 import { safeExecute } from "utils/guard";
@@ -16,10 +16,11 @@ const moveWindowTo = safeExecute(moveWindowToUnsafe);
 const toScreen = safeExecute(toScreenUnsafe);
 const minimizeAllButCurrent = safeExecute(minimizeAllButCurrentUnsafe);
 const unminimizeAllButCurrent = safeExecute(unminimizeAllButCurrentUnsafe);
+const minimizeCurrent = safeExecute(minimizeCurrentUnsafe);
+const unminimizeCurrent = safeExecute(unminimizeCurrentUnsafe);
 const enterFullscreen = safeExecute(enterFullscreenUnsafe);
 const exitFullscreen = safeExecute(exitFullscreenUnsafe);
 const openApps = safeExecute(openAppsUnsafe);
-const die = safeExecute(dieUnsafe);
 
 Phoenix.log("Renan Config Phoenix Loaded");
 
@@ -29,49 +30,52 @@ Phoenix.set({
   openAtLogin: true,
 });
 
+const MODIFIER: Phoenix.ModifierKey[] = ["alt", "cmd"];
+
 /**
  * Window sizing key bindings
  */
-
 // Keypad numbers
-Key.on("keypad0", ["alt", "cmd"], () => enterFullscreen());
-Key.on("keypad.", ["alt", "cmd"], () => exitFullscreen());
+Key.on("keypad0", MODIFIER, () => enterFullscreen());
+Key.on("keypad.", MODIFIER, () => exitFullscreen());
 
-Key.on("keypad1", ["alt", "cmd"], () => moveWindowTo("bottom-left"));
-Key.on("keypad2", ["alt", "cmd"], () => moveWindowTo("bottom"));
-Key.on("keypad3", ["alt", "cmd"], () => moveWindowTo("bottom-right"));
+Key.on("keypad1", MODIFIER, () => moveWindowTo("bottom-left"));
+Key.on("keypad2", MODIFIER, () => moveWindowTo("bottom"));
+Key.on("keypad3", MODIFIER, () => moveWindowTo("bottom-right"));
 
-Key.on("keypad4", ["alt", "cmd"], () => moveWindowTo("left"));
-Key.on("keypad5", ["alt", "cmd"], () => moveWindowTo("center"));
-Key.on("keypad6", ["alt", "cmd"], () => moveWindowTo("right"));
+Key.on("keypad4", MODIFIER, () => moveWindowTo("left"));
+Key.on("keypad5", MODIFIER, () => moveWindowTo("center"));
+Key.on("keypad6", MODIFIER, () => moveWindowTo("right"));
 
-Key.on("keypad7", ["alt", "cmd"], () => moveWindowTo("top-left"));
-Key.on("keypad8", ["alt", "cmd"], () => moveWindowTo("top"));
-Key.on("keypad9", ["alt", "cmd"], () => moveWindowTo("top-right"));
+Key.on("keypad7", MODIFIER, () => moveWindowTo("top-left"));
+Key.on("keypad8", MODIFIER, () => moveWindowTo("top"));
+Key.on("keypad9", MODIFIER, () => moveWindowTo("top-right"));
 
 // Arrows
-Key.on("up", ["alt", "cmd"], () => moveWindowTo("top"));
-Key.on("down", ["alt", "cmd"], () => moveWindowTo("bottom"));
-Key.on("left", ["alt", "cmd"], () => moveWindowTo("left"));
-Key.on("right", ["alt", "cmd"], () => moveWindowTo("right"));
+Key.on("up", MODIFIER, () => moveWindowTo("top"));
+Key.on("down", MODIFIER, () => moveWindowTo("bottom"));
+Key.on("left", MODIFIER, () => moveWindowTo("left"));
+Key.on("right", MODIFIER, () => moveWindowTo("right"));
 
 /**
  * Screen key bindings
  */
-Key.on("1", ["alt", "cmd"], () => toScreen(1));
-Key.on("2", ["alt", "cmd"], () => toScreen(2));
-Key.on("3", ["alt", "cmd"], () => toScreen(3));
+Key.on("1", MODIFIER, () => toScreen(1));
+Key.on("2", MODIFIER, () => toScreen(2));
+Key.on("3", MODIFIER, () => toScreen(3));
 
-Key.on(".", ["alt", "cmd"], () => toScreen("next"));
-Key.on(",", ["alt", "cmd"], () => toScreen("previous"));
+Key.on(".", MODIFIER, () => toScreen("next"));
+Key.on(",", MODIFIER, () => toScreen("previous"));
 
 /**
  * Window sizing key bindings
  */
-Key.on("end", ["alt", "cmd"], () => minimizeAllButCurrent());
-Key.on("home", ["alt", "cmd"], () => unminimizeAllButCurrent());
+Key.on("end", MODIFIER, () => minimizeAllButCurrent());
+Key.on("home", MODIFIER, () => unminimizeAllButCurrent());
+Key.on("pageDown", MODIFIER, () => minimizeCurrent());
+Key.on("pageUp", MODIFIER, () => unminimizeCurrent());
 
 /**
  * App key bindings
  */
-Key.on("\\", ["alt", "cmd"], () => openApps(["iTerm", "Slack", "Arc"]));
+Key.on("\\", MODIFIER, () => openApps(["iTerm", "Slack", "Arc"]));

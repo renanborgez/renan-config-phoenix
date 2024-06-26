@@ -30,6 +30,9 @@ You can always check and update the shortcuts [here](src/index.ts).
 "alt" + "cmd" + ","|move window to previous number
 "alt" + "cmd" + "end"|minimize all windows but keep current in open and in focus
 "alt" + "cmd" + "home"|unminimize all windows but keep current in focus
+"alt" + "cmd" + "pageDown"|minimize app
+"alt" + "cmd" + "pageUp"|unminimize app
+"alt" + "cmd" + "\"|open iTerm, Slack and Arc Browser
 
 ## Installation
 
