@@ -1,0 +1,18 @@
+{
+  "name": "renan-phoenix-config",
+  "author": "Renan Garcia Borges",
+  "license": "GNU GPLv3",
+  "version": "1.0.0",
+  "description": "Configuration for your phoenixjs window manager",
+  "main": "dist/phoenix.js",
+  "scripts": {
+    "postinstall": "npm run build",
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "@types/phoenix": "github:mafredri/phoenix-typings#main",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.2"
+  }
+}

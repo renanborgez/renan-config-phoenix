@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "baseUrl": "src",
+    "outDir": "dist/",
+    "target": "ES2021",
+    "strict": true,
+    "types": ["phoenix"],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["ES2021"]
+  },
+  "exclude": ["node_modules"]
+}
