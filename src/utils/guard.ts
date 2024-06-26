@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * Safely execute a function and catch any errors.
- *
- * @param {Function} fn - The function to be executed safely.
- * @returns {Function} A curried function that takes the arguments for the original function.
  */
-export const safeExecute = (fn: (...args: never[]) => unknown) => (...args: never[]) => {
+export const safeExecute = <T extends (...args: any[]) => any>(fn: T) =>
+  (...args: Parameters<T>): ReturnType<T> => {
   try {
     return fn(...args);
   } catch (error) {
     Phoenix.log('ERROR: ', JSON.stringify(error));
-    return undefined;
+    return undefined as ReturnType<T>;
   }
 };
